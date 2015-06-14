@@ -11,9 +11,7 @@ package main.com.acalabrese.sorters;
  * Worst Case: O(n^2)
  * Best Case: O(n)
  */
-public class BubbleSorter implements SorterInterface {
-    private int numberOfComparisons;
-
+public class BubbleSorter extends SorterBase {
     @Override
     public Comparable[] sort(Comparable[] arr) {
         // Create a new copy of the array
@@ -41,11 +39,6 @@ public class BubbleSorter implements SorterInterface {
             }
         }
         return newArr;
-    }
-
-    @Override
-    public int getNumberOfComparisons() {
-        return numberOfComparisons;
     }
 
     public static void main(String[] args) {

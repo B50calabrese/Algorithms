@@ -2,8 +2,11 @@ package test.com.acalabrese.sorters;
 
 import junit.framework.TestCase;
 import main.com.acalabrese.sorters.BubbleSorter;
-import main.com.acalabrese.sorters.SorterInterface;
+import main.com.acalabrese.sorters.SelectionSorter;
+import main.com.acalabrese.sorters.SorterBase;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -17,8 +20,12 @@ import java.util.Random;
  */
 @RunWith(Parameterized.class)
 public class SorterBaseTest extends TestCase {
-    // Used to print out various things from the test cases
-    public final static boolean PRINT_TEST_CASES = true;
+    // Used to print out the list of sorted values
+    public final static boolean PRINT_LISTS = true;
+    public final static int MAX_PRINT_LIST_SIZE = 20;
+
+    // Used to print out the number of comparisons
+    public final static boolean PRINT_COMPARISONS = false;
 
     // The highest random value that this base class will provide if not given an upper bound.
     protected final static int MAX_RANDOM_VALUE = 10000;
@@ -27,10 +34,14 @@ public class SorterBaseTest extends TestCase {
     protected final static int MEDIUM_SIZE = 100;
     protected final static int LARGE_SIZE = 1000;
 
-    SorterInterface sorterInterface;
+    private SorterBase sorterBase;
 
-    public SorterBaseTest(SorterInterface sorterInterface) {
-        this.sorterInterface = sorterInterface;
+    @Rule
+    public TestName name;
+
+    public SorterBaseTest(SorterBase sorterBase) {
+        this.sorterBase = sorterBase;
+        name = new TestName();
     }
 
     /*
@@ -39,56 +50,66 @@ public class SorterBaseTest extends TestCase {
 
     @Test
     public void testOneElement() {
-        testSorter(sorterInterface, new Integer[] {1});
+        testSorter(sorterBase, new Integer[]{1}, name.getMethodName());
     }
 
     @Test
     public void testSortedElementSmallList() {
-        testSorter(sorterInterface, getSortedList(SMALL_SIZE));
+        testSorter(sorterBase, getSortedList(SMALL_SIZE), name.getMethodName());
     }
 
     @Test
     public void testSortedElementMediumList() {
-        testSorter(sorterInterface, getSortedList(MEDIUM_SIZE));
+        testSorter(sorterBase, getSortedList(MEDIUM_SIZE), name.getMethodName());
     }
 
     @Test
     public void testSortedElementLargeList() {
-        testSorter(sorterInterface, getSortedList(LARGE_SIZE));
+        testSorter(sorterBase, getSortedList(LARGE_SIZE), name.getMethodName());
     }
 
     @Test
     public void testRandomElementSmallList() {
-        testSorter(sorterInterface, getRandomList(SMALL_SIZE));
+        testSorter(sorterBase, getRandomList(SMALL_SIZE), name.getMethodName());
     }
 
     @Test
     public void testRandomElementMediumList() {
-        testSorter(sorterInterface, getRandomList(MEDIUM_SIZE));
+        testSorter(sorterBase, getRandomList(MEDIUM_SIZE), name.getMethodName());
     }
 
     @Test
     public void testRandomElementLargeList() {
-        testSorter(sorterInterface, getRandomList(LARGE_SIZE));
+        testSorter(sorterBase, getRandomList(LARGE_SIZE), name.getMethodName());
     }
 
     /**
      * Tests the sorter on the given list
      */
-    protected boolean testSorter(SorterInterface sorter, Integer[] list) {
+    protected boolean testSorter(SorterBase sorter, Integer[] list, String testName) {
+        // The list "sorted"
         Integer[] newList = (Integer[]) sorter.sort(list);
-        String newListString = "";
-        String listString = "";
-        if (PRINT_TEST_CASES) {
+        boolean res = isSorted(newList);
+
+        String outputString = testName + " " + (res?"Passed":"Failed") + "\n";
+        if (PRINT_LISTS && MAX_PRINT_LIST_SIZE > newList.length) {
+            String newListString = "";
+            String listString = "";
             for (int i = 0 ; i < newList.length ; i++) {
                 newListString += newList[i] + " ";
                 listString += list[i] + " ";
             }
-            System.out.println("Unsorted list : " + listString);
-            System.out.println("Sorted list : " + listString);
-            System.out.println("Number of comparisons : " + sorter.getNumberOfComparisons());
+            outputString += "Unsorted list : " + listString + "\n";
+            outputString += "Sorted list : " + newListString + "\n";
         }
-        return isSorted(newList);
+
+        if (PRINT_COMPARISONS) {
+            outputString += "Number of comparisons : " + sorter.getNumberOfComparisons() + "\n";
+        }
+
+        System.out.println(outputString);
+
+        return res;
     }
 
     /**
@@ -139,7 +160,7 @@ public class SorterBaseTest extends TestCase {
     public static Collection<Object[]> instancesToTest() {
         return (Collection<Object[]>) Arrays.asList(
                 new Object[]{new BubbleSorter()},
-                new Object[]{new BubbleSorter()}
+                new Object[]{new SelectionSorter()}
         );
     }
 }
