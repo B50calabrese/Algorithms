@@ -12,10 +12,15 @@ package main.com.acalabrese.sorters;
  * Best Case: O(n)
  */
 public class BubbleSorter implements SorterInterface {
+    private int numberOfComparisons;
+
     @Override
     public Comparable[] sort(Comparable[] arr) {
         // Create a new copy of the array
         Comparable[] newArr = arr.clone();
+
+        // Zero out the number of comparisons
+        numberOfComparisons = 0;
 
         // This will keep track if we swapped or not. If there are no swaps, then the list is sorted
         boolean haveSwapped = true;
@@ -25,6 +30,8 @@ public class BubbleSorter implements SorterInterface {
             // Go through each element and if there are any that are out of order, swap them and
             // set the flag to true to do another pass.
             for (int i = 0 ; i < newArr.length - 1 ; i++) {
+                // We will be comparing so we need to increment our counter
+                numberOfComparisons++;
                 if (newArr[i + 1].compareTo(newArr[i]) < 0) {
                     Comparable temp = newArr[i];
                     newArr[i] = newArr[i + 1];
@@ -34,6 +41,11 @@ public class BubbleSorter implements SorterInterface {
             }
         }
         return newArr;
+    }
+
+    @Override
+    public int getNumberOfComparisons() {
+        return numberOfComparisons;
     }
 
     public static void main(String[] args) {

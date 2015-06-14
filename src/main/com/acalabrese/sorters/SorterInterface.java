@@ -10,4 +10,9 @@ public interface SorterInterface {
      * @return a new list in sorted order.
      */
     public Comparable[] sort(Comparable[] arr);
+
+    /**
+     * Returns the number of comparisons done on the previous sort call.
+     */
+    public int getNumberOfComparisons();
 }
