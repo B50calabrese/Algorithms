@@ -2,6 +2,7 @@ package test.com.acalabrese.sorters;
 
 import junit.framework.TestCase;
 import main.com.acalabrese.sorters.BubbleSorter;
+import main.com.acalabrese.sorters.InsertionSorter;
 import main.com.acalabrese.sorters.SelectionSorter;
 import main.com.acalabrese.sorters.SorterBase;
 import org.junit.Rule;
@@ -21,7 +22,7 @@ import java.util.Random;
 @RunWith(Parameterized.class)
 public class SorterBaseTest extends TestCase {
     // Used to print out the list of sorted values
-    public final static boolean PRINT_LISTS = true;
+    public final static boolean PRINT_LISTS = false;
     public final static int MAX_PRINT_LIST_SIZE = 20;
 
     // Used to print out the number of comparisons
@@ -91,11 +92,11 @@ public class SorterBaseTest extends TestCase {
         Integer[] newList = (Integer[]) sorter.sort(list);
         boolean res = isSorted(newList);
 
-        String outputString = testName + " " + (res?"Passed":"Failed") + "\n";
+        String outputString = testName + " " + (res ? "Passed" : "Failed") + "\n";
         if (PRINT_LISTS && MAX_PRINT_LIST_SIZE > newList.length) {
             String newListString = "";
             String listString = "";
-            for (int i = 0 ; i < newList.length ; i++) {
+            for (int i = 0; i < newList.length; i++) {
                 newListString += newList[i] + " ";
                 listString += list[i] + " ";
             }
@@ -117,7 +118,7 @@ public class SorterBaseTest extends TestCase {
      */
     protected Integer[] getSortedList(int size) {
         Integer[] list = new Integer[size];
-        for (int i = 0 ; i < size ; i++) {
+        for (int i = 0; i < size; i++) {
             list[i] = i;
         }
         return list;
@@ -132,13 +133,14 @@ public class SorterBaseTest extends TestCase {
 
     /**
      * Returns a list of random numbers, where the max number in that list is maxValue
-     * @param size the size of the list
+     *
+     * @param size     the size of the list
      * @param maxValue the highest value for the numbers
      */
     protected Integer[] getRandomList(int size, int maxValue) {
         Random random = new Random();
         Integer[] list = new Integer[size];
-        for (int i = 0 ; i < size ; i++) {
+        for (int i = 0; i < size; i++) {
             list[i] = random.nextInt(maxValue);
         }
         return list;
@@ -148,7 +150,7 @@ public class SorterBaseTest extends TestCase {
      * Tests a list to see if it is sorted
      */
     protected boolean isSorted(Comparable[] list) {
-        for (int i = 0 ; i < list.length - 1 ; i++) {
+        for (int i = 0; i < list.length - 1; i++) {
             if (list[i].compareTo(list[i + 1]) > 0) {
                 return false;
             }
@@ -160,7 +162,8 @@ public class SorterBaseTest extends TestCase {
     public static Collection<Object[]> instancesToTest() {
         return (Collection<Object[]>) Arrays.asList(
                 new Object[]{new BubbleSorter()},
-                new Object[]{new SelectionSorter()}
+                new Object[]{new SelectionSorter()},
+                new Object[]{new InsertionSorter()}
         );
     }
 }

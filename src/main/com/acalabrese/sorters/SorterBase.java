@@ -8,6 +8,7 @@ public abstract class SorterBase {
 
     /**
      * Sorts a list of comparables.
+     *
      * @param arr
      * @return a new list in sorted order.
      */
@@ -18,5 +19,14 @@ public abstract class SorterBase {
      */
     public int getNumberOfComparisons() {
         return numberOfComparisons;
+    }
+
+    /**
+     * Used to swap two values at the given indices
+     */
+    public void swap(Comparable[] arr, int index1, int index2) {
+        Comparable temp = arr[index1];
+        arr[index1] = arr[index2];
+        arr[index2] = temp;
     }
 }

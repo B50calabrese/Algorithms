@@ -2,12 +2,12 @@ package main.com.acalabrese.sorters;
 
 /**
  * Sorts a list of numbers using selection sort.
- *
+ * <p/>
  * Selection sort is a sorting algorithm where on each iteration through the unsorted portion of the
  * list, we find the smallest element still unsorted. From there we swap the first element in the
  * unsorted portion with the first element in the unsorted portion thereby shrinking the unsorted
  * portion of the list.
- *
+ * <p/>
  * Average Case: O(n^2)
  * Worst Case: O(n^2)
  * Best Case: O(n^2)
@@ -22,11 +22,11 @@ public class SelectionSorter extends SorterBase {
         numberOfComparisons = 0;
 
         // We will be constantly shrinking the unsorted portion
-        for (int sortedIndex = 0 ; sortedIndex < newArr.length - 1 ; sortedIndex++) {
+        for (int sortedIndex = 0; sortedIndex < newArr.length - 1; sortedIndex++) {
             // Our smallest value starts at the first index that isn't sorted.
             int leastValIndex = sortedIndex;
 
-            for (int index = sortedIndex ; index < newArr.length ; index++) {
+            for (int index = sortedIndex; index < newArr.length; index++) {
                 // We need to increment the number of comparisons
                 numberOfComparisons++;
 
@@ -38,9 +38,7 @@ public class SelectionSorter extends SorterBase {
             }
 
             // Now that we have the smallest, we need to swap the values
-            Comparable temp = newArr[leastValIndex];
-            newArr[leastValIndex] = newArr[sortedIndex];
-            newArr[sortedIndex] = temp;
+            swap(newArr, sortedIndex, leastValIndex);
         }
         return newArr;
     }
